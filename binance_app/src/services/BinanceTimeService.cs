@@ -3,21 +3,15 @@ using System.Text.Json;
 
 namespace BinanceApp
 {
-    public class BinanceTimeService
+    public class BinanceTimeService : ServiceBase
     {
         private const string API_TIME_METHOD = "GET";
 
-        private string apiBaseUrl = string.Empty;
         private string apiTimePath = string.Empty;
-
         private DateTime invalidTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        private HttpClient httpClient = null;
-
-        public BinanceTimeService(HttpClient httpClient, string apiBaseUrl, string apiTimePath)
+        public BinanceTimeService(IApp app, string apiTimePath) : base(app)
         {
-            this.httpClient = httpClient;
-            this.apiBaseUrl = apiBaseUrl;
             this.apiTimePath = apiTimePath;
         }
 
@@ -25,8 +19,8 @@ namespace BinanceApp
         {
             try
             {
-                string endPoint = $"{this.apiBaseUrl}{this.apiTimePath}";
-                HttpResponseMessage apiTimeResult = await this.httpClient.GetAsync(endPoint);
+                string endPoint = $"{App.BaseUrl}{this.apiTimePath}";
+                HttpResponseMessage apiTimeResult = await App.HttpClient.GetAsync(endPoint);
 
                 // HttpResponseMessageHandler.LogResponse((apiTimeResult));
 

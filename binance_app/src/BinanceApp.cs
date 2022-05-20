@@ -1,6 +1,6 @@
 namespace BinanceApp
 {
-    public class App
+    public class App : IApp
     {
         private const string BASE_URL = "https://api.binance.com";
 
@@ -10,15 +10,22 @@ namespace BinanceApp
 
         private BinanceExchangeService exchangeService = null;
         private BinancePingService pingService = null;
+        private BinanceSpotService spotService = null;
         private BinanceTimeService timeService = null;
+
+        public bool IsRunning => this.isRunning;
+        public string BaseUrl => BASE_URL;
+
+        public HttpClient HttpClient => this.httpClient;
 
         public App()
         {
             this.httpClient = new HttpClient();
 
-            this.exchangeService = new BinanceExchangeService(this.httpClient, BASE_URL, "/api/v3/exchangeInfo?symbol={0}");
-            this.pingService = new BinancePingService(this.httpClient, BASE_URL, "/api/v3/ping");
-            this.timeService = new BinanceTimeService(this.httpClient, BASE_URL, "/api/v3/time");
+            this.exchangeService = new BinanceExchangeService(this, "/api/v3/exchangeInfo?symbol={0}");
+            this.pingService = new BinancePingService(this, "/api/v3/ping");
+            this.spotService = new BinanceSpotService(this, "/api/v3/account (HMAC SHA256)");
+            this.timeService = new BinanceTimeService(this, "/api/v3/time");
         }
 
         public void StartApp()
@@ -83,7 +90,7 @@ namespace BinanceApp
         /// <returns>Returns if it was possible to send a ping request.</returns>
         private bool TryApiPingRequest()
         {
-            Task<bool> updateTask = Task.Run<bool>(async () => await this.pingService.TryApiPingRequest());
+            Task<bool> updateTask = Task.Run<bool>(async () => await this.pingService.ApiPingRequest());
             return updateTask.Result;
         }
 
@@ -93,7 +100,7 @@ namespace BinanceApp
         /// <returns>Returns if the ping is successfull.</returns>
         private bool TryPingBaseUrl()
         {
-            Task<bool> updateTask = Task.Run<bool>(async () => await this.pingService.TryPingBaseUrl());
+            Task<bool> updateTask = Task.Run<bool>(async () => await this.pingService.PingBaseUrl());
             return updateTask.Result;
         }
     }

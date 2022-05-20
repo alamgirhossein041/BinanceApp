@@ -3,20 +3,20 @@ using System.Text.Json;
 
 namespace BinanceApp
 {
-    public class BinanceExchangeService : ServiceBase
+    public class BinanceSpotService : ServiceBase
     {
-        private readonly string assetPath = string.Empty;
+        private readonly string apiSpotPath = string.Empty;
 
-        public BinanceExchangeService(IApp app, string assetPath) : base(app)
+        public BinanceSpotService(IApp app, string apiSpotPath) : base(app)
         {
-            this.assetPath = assetPath;
+            this.apiSpotPath = apiSpotPath;
         }
 
-        public async Task<BinanceExchangeAsset?> GetAsset(string pairName)
+        public async Task<SpotAccountInformation?> GetSpotAccountInformation()
         {
             try
             {
-                string endPoint = string.Format($"{App.BaseUrl}{this.assetPath}", pairName);
+                string endPoint = $"{App.BaseUrl}{this.apiSpotPath}";
 
                 HttpResponseMessage apiAssetResult = await App.HttpClient.GetAsync(endPoint);
 
@@ -29,9 +29,9 @@ namespace BinanceApp
 
                     Console.WriteLine($"Asset: {apiAssetResultContent}");
 
-                    BinanceExchangeAsset asset = JsonSerializer.Deserialize<BinanceExchangeAsset>(apiAssetResultContent);
+                    SpotAccountInformation spotAccount = JsonSerializer.Deserialize<SpotAccountInformation>(apiAssetResultContent);
 
-                    return null;
+                    return spotAccount;
                 }
 
                 return null;

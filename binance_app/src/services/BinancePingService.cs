@@ -3,26 +3,21 @@ using System.Net.NetworkInformation;
 
 namespace BinanceApp
 {
-    public class BinancePingService
+    public class BinancePingService : ServiceBase
     {
-        private readonly string apiBaseUrl = string.Empty;
         private readonly string apiPingPath = string.Empty;
 
-        private readonly HttpClient httpClient = null;
-
-        public BinancePingService(HttpClient httpClient, string apiBaseUrl, string apiPingPath)
+        public BinancePingService(IApp app, string apiPingPath) : base(app)
         {
-            this.httpClient = httpClient;
-            this.apiBaseUrl = apiBaseUrl;
             this.apiPingPath = apiPingPath;
         }
 
-        public async Task<bool> TryApiPingRequest()
+        public async Task<bool> ApiPingRequest()
         {
             try
             {
-                string endPoint = $"{this.apiBaseUrl}{this.apiPingPath}";
-                HttpResponseMessage apiPingresult = await this.httpClient.GetAsync(endPoint);
+                string endPoint = $"{App.BaseUrl}{this.apiPingPath}";
+                HttpResponseMessage apiPingresult = await App.HttpClient.GetAsync(endPoint);
 
                 // HttpResponseMessageHandler.LogResponse((apiPingresult));
 
@@ -36,13 +31,13 @@ namespace BinanceApp
             return false;
         }
 
-        public async Task<bool> TryPingBaseUrl()
+        public async Task<bool> PingBaseUrl()
         {
             try
             {
                 Ping ping = new Ping();
                 // Ping url must not contain {https://}.
-                PingReply pingResult = await ping.SendPingAsync(this.apiBaseUrl.Replace("https://", ""));
+                PingReply pingResult = await ping.SendPingAsync(App.BaseUrl.Replace("https://", ""));
 
                 // PingReplyHandler.LogReply(pingResult);
 
