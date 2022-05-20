@@ -8,14 +8,18 @@ namespace BinanceApp
         private const string API_TIME_METHOD = "GET";
 
         private string apiTimePath = string.Empty;
-        private DateTime invalidTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public BinanceTimeService(IApp app, string apiTimePath) : base(app)
         {
             this.apiTimePath = apiTimePath;
         }
 
-        public async Task<DateTime> GetServerTime()
+        override public void StartService()
+        {
+
+        }
+
+        public async Task<DateTime?> GetServerTime()
         {
             try
             {
@@ -40,14 +44,14 @@ namespace BinanceApp
                     }
                 }
 
-                return this.invalidTime;
+                return null;
             }
             catch (Exception e)
             {
                 ExceptionHandler.LogException(e);
             }
 
-            return this.invalidTime;
+            return null;
         }
     }
 }

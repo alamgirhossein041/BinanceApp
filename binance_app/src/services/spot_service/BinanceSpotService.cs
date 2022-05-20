@@ -12,6 +12,11 @@ namespace BinanceApp
             this.apiSpotPath = apiSpotPath;
         }
 
+        override public void StartService()
+        {
+
+        }
+
         public async Task<SpotAccountInformation?> GetSpotAccountInformation()
         {
             try

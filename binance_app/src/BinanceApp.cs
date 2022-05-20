@@ -4,6 +4,8 @@ namespace BinanceApp
     {
         private const string BASE_URL = "https://api.binance.com";
 
+        private const string SECRET_KEY = "";
+
         private bool isRunning = true;
 
         private HttpClient httpClient = null;
@@ -15,6 +17,7 @@ namespace BinanceApp
 
         public bool IsRunning => this.isRunning;
         public string BaseUrl => BASE_URL;
+        public string SecretKey => SECRET_KEY;
 
         public HttpClient HttpClient => this.httpClient;
 
@@ -30,6 +33,11 @@ namespace BinanceApp
 
         public void StartApp()
         {
+            this.exchangeService.StartService();
+            this.pingService.StartService();
+            this.spotService.StartService();
+            this.timeService.StartService();
+
             if (!this.TryPingBaseUrl() || !this.TryApiPingRequest())
             {
                 Console.WriteLine("Failed to ping app.");
@@ -47,16 +55,17 @@ namespace BinanceApp
                 return;
             }
 
-            if (!this.TryGetAssetInfo("BTCUSDT"))
+            if (!this.TryGetExchangeAssetInfo("BTCUSDT"))
             {
                 Console.WriteLine("Failed to get asset info.");
                 return;
             }
         }
 
-        private bool TryGetAssetInfo(string pairName)
+
+        private bool TryGetExchangeAssetInfo(string pairName)
         {
-            Task<BinanceExchangeAsset?> exchangeAssetTask = Task.Run<BinanceExchangeAsset?>(async () => await this.exchangeService.GetAsset(pairName));
+            Task<BinanceExchangeAsset?> exchangeAssetTask = Task.Run<BinanceExchangeAsset?>(async () => await this.exchangeService.GetExchangeAsset(pairName));
 
             if (exchangeAssetTask.Result != null)
             {
@@ -73,7 +82,7 @@ namespace BinanceApp
         /// <returns>Returns if it was possible to get the server time.</returns>
         private bool TryGetServerTime()
         {
-            Task<DateTime> serverTimeTask = Task.Run<DateTime>(async () => await this.timeService.GetServerTime());
+            Task<DateTime?> serverTimeTask = Task.Run<DateTime?>(async () => await this.timeService.GetServerTime());
 
             if (serverTimeTask.Result != null)
             {

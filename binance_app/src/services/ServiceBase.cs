@@ -11,9 +11,6 @@ namespace BinanceApp
             this.appReference = app;
         }
 
-        public void StartService()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void StartService();
     }
 }

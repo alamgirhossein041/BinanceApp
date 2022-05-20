@@ -12,7 +12,12 @@ namespace BinanceApp
             this.assetPath = assetPath;
         }
 
-        public async Task<BinanceExchangeAsset?> GetAsset(string pairName)
+        override public void StartService()
+        {
+
+        }
+
+        public async Task<BinanceExchangeAsset?> GetExchangeAsset(string pairName)
         {
             try
             {

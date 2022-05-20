@@ -12,6 +12,11 @@ namespace BinanceApp
             this.apiPingPath = apiPingPath;
         }
 
+        override public void StartService()
+        {
+
+        }
+
         public async Task<bool> ApiPingRequest()
         {
             try
