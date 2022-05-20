@@ -60,7 +60,10 @@ namespace BinanceApp
             return false;
         }
 
-        /// Gets the server time.
+        /// <summary>
+        /// Tries to get server date time.
+        /// </summary>
+        /// <returns>Returns if it was possible to get the server time.</returns>
         private bool TryGetServerTime()
         {
             Task<DateTime> serverTimeTask = Task.Run<DateTime>(async () => await this.timeService.GetServerTime());
@@ -74,14 +77,20 @@ namespace BinanceApp
             return false;
         }
 
-        /// Ping ap ping path to check if the app is running.
+        /// <summary>
+        /// Tries to send ping request to the server.
+        /// </summary>
+        /// <returns>Returns if it was possible to send a ping request.</returns>
         private bool TryApiPingRequest()
         {
             Task<bool> updateTask = Task.Run<bool>(async () => await this.pingService.TryApiPingRequest());
             return updateTask.Result;
         }
 
-        /// Ping the base url to check if the app is running.
+        /// <summary>
+        /// Tries to ping the base url using the .donet ping class.
+        /// </summary>
+        /// <returns>Returns if the ping is successfull.</returns>
         private bool TryPingBaseUrl()
         {
             Task<bool> updateTask = Task.Run<bool>(async () => await this.pingService.TryPingBaseUrl());
