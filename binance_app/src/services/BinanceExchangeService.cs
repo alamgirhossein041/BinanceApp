@@ -27,8 +27,6 @@ namespace BinanceApp
                     string apiAssetResultContent = await apiAssetResult.Content.ReadAsStringAsync();
                     // Dictionary<string, object> values = JsonSerializer.Deserialize<Dictionary<string, object>>(apiAssetResultContent);
 
-                    Console.WriteLine($"Asset: {apiAssetResultContent}");
-
                     BinanceExchangeAsset asset = JsonSerializer.Deserialize<BinanceExchangeAsset>(apiAssetResultContent);
 
                     return null;
