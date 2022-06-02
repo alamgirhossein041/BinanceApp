@@ -4,7 +4,7 @@ namespace BinanceApp
     {
         private const string BASE_URL = "https://api.binance.com";
 
-        private const string SECRET_KEY = "";
+        private const string SECRET_KEY = "WTGEstCvE97D8FgLiUEf9LEAROnQHR93KVnQ0uqLHRGVdKyFTAOxjXENP6aCFYMq";
 
         private bool isRunning = true;
 
@@ -69,7 +69,8 @@ namespace BinanceApp
 
             if (exchangeAssetTask.Result != null)
             {
-                // Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
+                Console.WriteLine("Server time: " + exchangeAssetTask.Result.ToString());
+
                 return true;
             }
 
@@ -86,7 +87,8 @@ namespace BinanceApp
 
             if (serverTimeTask.Result != null)
             {
-                // Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
+                Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
+
                 return true;
             }
 

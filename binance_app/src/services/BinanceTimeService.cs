@@ -32,14 +32,10 @@ namespace BinanceApp
                 {
                     string apiTimeResultContent = await apiTimeResult.Content.ReadAsStringAsync();
                     Dictionary<string, object> values = JsonSerializer.Deserialize<Dictionary<string, object>>(apiTimeResultContent);
-
                     if (Double.TryParse(values["serverTime"].ToString(), out double asDouble))
                     {
                         DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                         DateTime serverTime = start.AddMilliseconds((long)asDouble);
-
-                        Console.WriteLine("Server time: " + serverTime.ToString());
-
                         return serverTime;
                     }
                 }
