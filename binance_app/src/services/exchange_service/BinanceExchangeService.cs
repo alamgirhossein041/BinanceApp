@@ -17,7 +17,7 @@ namespace BinanceApp
 
         }
 
-        public async Task<BinanceExchangeAsset?> GetExchangeAsset(string pairName)
+        public async Task<BinanceExchangeResult?> GetExchangeAsset(string pairName)
         {
             try
             {
@@ -32,9 +32,9 @@ namespace BinanceApp
                     string apiAssetResultContent = await apiAssetResult.Content.ReadAsStringAsync();
                     // Dictionary<string, object> values = JsonSerializer.Deserialize<Dictionary<string, object>>(apiAssetResultContent);
 
-                    BinanceExchangeAsset asset = JsonSerializer.Deserialize<BinanceExchangeAsset>(apiAssetResultContent);
+                    BinanceExchangeResult asset = JsonSerializer.Deserialize<BinanceExchangeResult>(apiAssetResultContent);
 
-                    return null;
+                    return asset;
                 }
 
                 return null;

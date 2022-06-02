@@ -65,11 +65,11 @@ namespace BinanceApp
 
         private bool TryGetExchangeAssetInfo(string pairName)
         {
-            Task<BinanceExchangeAsset?> exchangeAssetTask = Task.Run<BinanceExchangeAsset?>(async () => await this.exchangeService.GetExchangeAsset(pairName));
+            Task<BinanceExchangeResult?> exchangeAssetTask = Task.Run<BinanceExchangeResult?>(async () => await this.exchangeService.GetExchangeAsset(pairName));
 
             if (exchangeAssetTask.Result != null)
             {
-                Console.WriteLine("Server time: " + exchangeAssetTask.Result.ToString());
+                Console.WriteLine("Exchange result: " + exchangeAssetTask.Result.ToString());
 
                 return true;
             }
