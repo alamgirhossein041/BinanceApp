@@ -22,19 +22,13 @@ namespace BinanceApp
             try
             {
                 string endPoint = string.Format($"{App.BaseUrl}{this.assetPath}", pairName);
-
                 HttpResponseMessage apiAssetResult = await App.HttpClient.GetAsync(endPoint);
-
                 // HttpResponseMessageHandler.LogResponse(apiAssetResult);
-
                 if (apiAssetResult.StatusCode == HttpStatusCode.OK)
                 {
                     string apiAssetResultContent = await apiAssetResult.Content.ReadAsStringAsync();
-                    // Dictionary<string, object> values = JsonSerializer.Deserialize<Dictionary<string, object>>(apiAssetResultContent);
-
-                    BinanceExchangeResult asset = JsonSerializer.Deserialize<BinanceExchangeResult>(apiAssetResultContent);
-
-                    return asset;
+                    BinanceExchangeResult? asset = JsonSerializer.Deserialize<BinanceExchangeResult>(apiAssetResultContent);
+                    return asset ?? BinanceExchangeResult.InvalidResult;
                 }
 
                 return null;

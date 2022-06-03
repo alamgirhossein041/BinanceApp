@@ -10,7 +10,6 @@ namespace BinanceApp
         {
             messageBuilder.AppendLine($"___MESSAGE:{e.Message}.");
             messageBuilder.AppendLine($"___STACKTRACE:{e.StackTrace}.");
-
             Console.WriteLine(messageBuilder.ToString());
         }
     }

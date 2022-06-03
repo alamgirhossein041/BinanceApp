@@ -2,7 +2,7 @@
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello World!");
+        Console.WriteLine("Hello Binance World!");
 
         BinanceApp.App binanceApp = new BinanceApp.App();
         binanceApp.StartApp();

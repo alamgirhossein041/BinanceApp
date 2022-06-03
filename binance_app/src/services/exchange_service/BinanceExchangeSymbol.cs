@@ -1,12 +1,10 @@
-using System.Text.Json.Serialization;
-
 namespace BinanceApp
 {
     public struct BinanceExchangeSymbol
     {
-        public readonly string symbol { get; }
-        public readonly string baseAsset { get; }
-        public readonly double quoteAsset { get; }
+        public string symbol { get; set; }
+        public string baseAsset { get; set; }
+        public string quoteAsset { get; set; }
 
         public override string ToString()
         {
