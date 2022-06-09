@@ -60,20 +60,34 @@ namespace BinanceApp
                 Console.WriteLine("Failed to get asset info.");
                 return;
             }
+
+            if (!this.TryGetSpotAccount())
+            {
+                Console.WriteLine("Failed to get spot account.");
+                return;
+            }
+        }
+
+        private bool TryGetSpotAccount()
+        {
+            Task<SpotAccountInformation?> spotTask = Task.Run<SpotAccountInformation?>(async () => await this.spotService.GetSpotAccountInformation());
+            if (spotTask.Result != null)
+            {
+                Console.WriteLine($"Spot account: {spotTask.Result.ToString()}");
+                return true;
+            }
+            return false;
         }
 
 
         private bool TryGetExchangeAssetInfo(string pairName)
         {
             Task<BinanceExchangeResult?> exchangeAssetTask = Task.Run<BinanceExchangeResult?>(async () => await this.exchangeService.GetExchangeAsset(pairName));
-
             if (exchangeAssetTask.Result != null)
             {
-                Console.WriteLine("Exchange result: " + exchangeAssetTask.Result.ToString());
-
+                Console.WriteLine($"Exchange result: {exchangeAssetTask.Result.ToString()}");
                 return true;
             }
-
             return false;
         }
 
@@ -84,14 +98,12 @@ namespace BinanceApp
         private bool TryGetServerTime()
         {
             Task<DateTime?> serverTimeTask = Task.Run<DateTime?>(async () => await this.timeService.GetServerTime());
-
             if (serverTimeTask.Result != null)
             {
                 Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
 
                 return true;
             }
-
             return false;
         }
 

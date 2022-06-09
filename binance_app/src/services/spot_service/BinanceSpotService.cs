@@ -5,7 +5,7 @@ namespace BinanceApp
 {
     public class BinanceSpotService : ServiceBase
     {
-        private readonly string apiSpotPath = string.Empty;
+        private readonly string apiSpotPath = "/api/v3/account (HMAC SHA256)";
 
         public BinanceSpotService(IApp app, string apiSpotPath) : base(app)
         {
