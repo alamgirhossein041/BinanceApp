@@ -24,10 +24,11 @@ namespace BinanceApp
         public App()
         {
             this.httpClient = new HttpClient();
+            this.httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", SECRET_KEY);
 
             this.exchangeService = new BinanceExchangeService(this, "/api/v3/exchangeInfo?symbol={0}");
             this.pingService = new BinancePingService(this, "/api/v3/ping");
-            this.spotService = new BinanceSpotService(this, "/api/v3/account (HMAC SHA256)");
+            this.spotService = new BinanceSpotService(this, "/api/v3/account");
             this.timeService = new BinanceTimeService(this, "/api/v3/time");
         }
 
