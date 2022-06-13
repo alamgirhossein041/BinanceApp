@@ -5,7 +5,7 @@ namespace BinanceApp
 {
     public class BinanceSpotService : ServiceBase
     {
-        private readonly string apiSpotPath = string.Empty;
+        private readonly string apiSpotPath = "/api/v3/account";
 
         public BinanceSpotService(IApp app, string apiSpotPath) : base(app)
         {
@@ -34,9 +34,9 @@ namespace BinanceApp
 
                     Console.WriteLine($"Asset: {apiAssetResultContent}");
 
-                    SpotAccountInformation spotAccount = JsonSerializer.Deserialize<SpotAccountInformation>(apiAssetResultContent);
+                    // SpotAccountInformation spotAccount = JsonSerializer.Deserialize<SpotAccountInformation>(apiAssetResultContent);
 
-                    return spotAccount;
+                    return null;
                 }
 
                 return null;

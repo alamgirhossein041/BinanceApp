@@ -4,7 +4,7 @@ namespace BinanceApp
     {
         private const string BASE_URL = "https://api.binance.com";
 
-        private const string SECRET_KEY = "";
+        private const string SECRET_KEY = "WTGEstCvE97D8FgLiUEf9LEAROnQHR93KVnQ0uqLHRGVdKyFTAOxjXENP6aCFYMq";
 
         private bool isRunning = true;
 
@@ -24,10 +24,11 @@ namespace BinanceApp
         public App()
         {
             this.httpClient = new HttpClient();
+            this.httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", SECRET_KEY);
 
             this.exchangeService = new BinanceExchangeService(this, "/api/v3/exchangeInfo?symbol={0}");
             this.pingService = new BinancePingService(this, "/api/v3/ping");
-            this.spotService = new BinanceSpotService(this, "/api/v3/account (HMAC SHA256)");
+            this.spotService = new BinanceSpotService(this, "/api/v3/account");
             this.timeService = new BinanceTimeService(this, "/api/v3/time");
         }
 
@@ -60,19 +61,34 @@ namespace BinanceApp
                 Console.WriteLine("Failed to get asset info.");
                 return;
             }
+
+            if (!this.TryGetSpotAccount())
+            {
+                Console.WriteLine("Failed to get spot account.");
+                return;
+            }
+        }
+
+        private bool TryGetSpotAccount()
+        {
+            Task<SpotAccountInformation?> spotTask = Task.Run<SpotAccountInformation?>(async () => await this.spotService.GetSpotAccountInformation());
+            if (spotTask.Result != null)
+            {
+                Console.WriteLine($"Spot account: {spotTask.Result.ToString()}");
+                return true;
+            }
+            return false;
         }
 
 
         private bool TryGetExchangeAssetInfo(string pairName)
         {
-            Task<BinanceExchangeAsset?> exchangeAssetTask = Task.Run<BinanceExchangeAsset?>(async () => await this.exchangeService.GetExchangeAsset(pairName));
-
+            Task<BinanceExchangeResult?> exchangeAssetTask = Task.Run<BinanceExchangeResult?>(async () => await this.exchangeService.GetExchangeAsset(pairName));
             if (exchangeAssetTask.Result != null)
             {
-                // Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
+                Console.WriteLine($"Exchange result: {exchangeAssetTask.Result.ToString()}");
                 return true;
             }
-
             return false;
         }
 
@@ -83,13 +99,12 @@ namespace BinanceApp
         private bool TryGetServerTime()
         {
             Task<DateTime?> serverTimeTask = Task.Run<DateTime?>(async () => await this.timeService.GetServerTime());
-
             if (serverTimeTask.Result != null)
             {
-                // Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
+                Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
+
                 return true;
             }
-
             return false;
         }
 
