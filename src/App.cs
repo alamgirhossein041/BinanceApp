@@ -24,7 +24,6 @@ namespace BinanceApp
         public App()
         {
             this.httpClient = new HttpClient();
-            this.httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", SECRET_KEY);
 
             this.exchangeService = new BinanceExchangeService(this, "/api/v3/exchangeInfo?symbol={0}");
             this.pingService = new BinancePingService(this, "/api/v3/ping");
