@@ -1,6 +1,6 @@
-namespace BinanceApp
+namespace BinanceApp.ExchangeService
 {
-    public struct BinanceExchangeSymbol
+    public struct ExchangeSymbol
     {
         public string symbol { get; set; }
         public string baseAsset { get; set; }

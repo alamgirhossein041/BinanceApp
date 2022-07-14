@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace BinanceApp
+namespace BinanceApp.ExchangeService
 {
     public class BinanceExchangeService : ServiceBase
     {
@@ -17,11 +17,11 @@ namespace BinanceApp
 
         }
 
-        public async Task<BinanceExchangeResult?> GetExchangeAsset(string pairName)
+        public async Task<BinanceExchangeResult?> GetExchangeSymbol(string symbol)
         {
             try
             {
-                string endPoint = string.Format($"{App.BaseUrl}{this.assetPath}", pairName);
+                string endPoint = string.Format($"{App.BaseUrl}{this.assetPath}", symbol);
                 HttpResponseMessage apiAssetResult = await App.HttpClient.GetAsync(endPoint);
                 // HttpResponseMessageHandler.LogResponse(apiAssetResult);
                 if (apiAssetResult.StatusCode == HttpStatusCode.OK)

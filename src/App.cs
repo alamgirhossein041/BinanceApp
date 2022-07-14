@@ -1,10 +1,14 @@
+using BinanceApp.ExchangeService;
+using BinanceApp.SpotService;
+
 namespace BinanceApp
 {
     public class App : IApp
     {
         private const string BASE_URL = "https://api.binance.com";
 
-        private const string SECRET_KEY = "WTGEstCvE97D8FgLiUEf9LEAROnQHR93KVnQ0uqLHRGVdKyFTAOxjXENP6aCFYMq";
+        private const string API_KEY = "MCRHqIVL4G7G2OrFYosY8c8HgeAboy3wjC1b8x1AHlY0Mqnax67s3dnTfQyF2xgG";
+        private const string SECRET_KEY = "LasxSY0aaf26ACSbjmRg08XJu4MIR2zJvPHp9D76b4gWjC8HN987yAdvHLWLCqqo";
 
         private bool isRunning = true;
 
@@ -17,6 +21,7 @@ namespace BinanceApp
 
         public bool IsRunning => this.isRunning;
         public string BaseUrl => BASE_URL;
+        public string ApiKey => API_KEY;
         public string SecretKey => SECRET_KEY;
 
         public HttpClient HttpClient => this.httpClient;
@@ -66,6 +71,12 @@ namespace BinanceApp
                 Console.WriteLine("Failed to get spot account.");
                 return;
             }
+
+            // if (!this.TryGetAllOrders("BTCBUSD"))
+            // {
+            //     Console.WriteLine("Failed to get spot account.");
+            //     return;
+            // }
         }
 
         private bool TryGetSpotAccount()
@@ -79,10 +90,20 @@ namespace BinanceApp
             return false;
         }
 
+        private bool TryGetAllOrders(string symbol)
+        {
+            Task<Dictionary<string, string>?> spotTask = Task.Run<Dictionary<string, string>?>(async () => await this.spotService.GetAllOrders(symbol));
+            if (spotTask.Result != null)
+            {
+                Console.WriteLine($"Spot account: {spotTask.Result.ToString()}");
+                return true;
+            }
+            return false;
+        }
 
         private bool TryGetExchangeAssetInfo(string pairName)
         {
-            Task<BinanceExchangeResult?> exchangeAssetTask = Task.Run<BinanceExchangeResult?>(async () => await this.exchangeService.GetExchangeAsset(pairName));
+            Task<BinanceExchangeResult?> exchangeAssetTask = Task.Run<BinanceExchangeResult?>(async () => await this.exchangeService.GetExchangeSymbol(pairName));
             if (exchangeAssetTask.Result != null)
             {
                 Console.WriteLine($"Exchange result: {exchangeAssetTask.Result.ToString()}");

@@ -1,6 +1,7 @@
 using System.Text;
-namespace BinanceApp
+namespace BinanceApp.ExchangeService
 {
+    [Serializable]
     public struct BinanceExchangeResult
     {
         #region Static stuff.
@@ -10,24 +11,22 @@ namespace BinanceApp
         {
             timezone = "Invalid",
             serverTime = 0,
-            symbols = new BinanceExchangeSymbol[] { }
+            symbols = new ExchangeSymbol[] { }
         };
         #endregion
 
         public string timezone { get; set; }
         public long serverTime { get; set; }
-        public BinanceExchangeSymbol[] symbols { get; set; }
+        public ExchangeSymbol[] symbols { get; set; }
 
         public override string ToString()
         {
             (toStringBuilder ??= new StringBuilder()).Clear();
-            toStringBuilder.Append($"Timezone:{this.timezone}");
-            toStringBuilder.AppendLine();
-            toStringBuilder.Append($"ServerTime:{this.serverTime}");
+            toStringBuilder.AppendLine($"Timezone:{this.timezone}");
+            toStringBuilder.AppendLine($"ServerTime:{this.serverTime}");
             for (int i = 0; i < this.symbols.Length; i++)
             {
-                toStringBuilder.AppendLine();
-                toStringBuilder.Append(this.symbols[i].ToString());
+                toStringBuilder.AppendLine(this.symbols[i].ToString());
             }
             return toStringBuilder.ToString();
         }
