@@ -2,9 +2,9 @@ namespace BinanceApp.SpotService
 {
     public struct SpotSymbol
     {
-        public string asset;
-        public string free;
-        public string locked;
+        public string asset { get; set; }
+        public string free { get; set; }
+        public string locked { get; set; }
 
         public override string ToString()
         {

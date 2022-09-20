@@ -1,4 +1,5 @@
 using BinanceApp.ExchangeService;
+using BinanceApp.PingService;
 using BinanceApp.SpotService;
 
 namespace BinanceApp
@@ -134,8 +135,8 @@ namespace BinanceApp
         /// <returns>Returns if it was possible to send a ping request.</returns>
         private bool TryApiPingRequest()
         {
-            Task<bool> updateTask = Task.Run<bool>(async () => await this.pingService.ApiPingRequest());
-            return updateTask.Result;
+            Task<BinancePing?> pingTask = Task.Run<BinancePing?>(async () => await this.pingService.ApiPingRequest());
+            return pingTask?.Result != null ? !pingTask.Result.Value.isInvalid : false;
         }
 
         /// <summary>

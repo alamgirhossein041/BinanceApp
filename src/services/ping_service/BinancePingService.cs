@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace BinanceApp
+namespace BinanceApp.PingService
 {
-    public class BinancePingService : ServiceBase
+    public class BinancePingService : BinanceBaseService
     {
         private readonly string apiPingPath = string.Empty;
 
@@ -17,23 +17,20 @@ namespace BinanceApp
 
         }
 
-        public async Task<bool> ApiPingRequest()
+        public async Task<BinancePing?> ApiPingRequest()
         {
+            string endPoint = $"{App.BaseUrl}{this.apiPingPath}";
+
             try
             {
-                string endPoint = $"{App.BaseUrl}{this.apiPingPath}";
-                HttpResponseMessage apiPingresult = await App.HttpClient.GetAsync(endPoint);
-
-                // HttpResponseMessageHandler.LogResponse((apiPingresult));
-
-                return apiPingresult.StatusCode == HttpStatusCode.OK;
+                return await this.SendRequest<BinancePing?>(HttpMethod.Get, this.apiPingPath, null);
             }
             catch (Exception e)
             {
                 ExceptionHandler.LogException(e);
             }
 
-            return false;
+            return BinancePing.InvalidPing;
         }
 
         public async Task<bool> PingBaseUrl()
@@ -43,9 +40,6 @@ namespace BinanceApp
                 Ping ping = new Ping();
                 // Ping url must not contain {https://}.
                 PingReply pingResult = await ping.SendPingAsync(App.BaseUrl.Replace("https://", ""));
-
-                // PingReplyHandler.LogReply(pingResult);
-
                 return pingResult.Status == IPStatus.Success;
             }
             catch (Exception e)

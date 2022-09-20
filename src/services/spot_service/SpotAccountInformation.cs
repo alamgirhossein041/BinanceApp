@@ -6,19 +6,28 @@ namespace BinanceApp.SpotService
     {
         #region Static stuff.
         private static StringBuilder toStringBuilder = new StringBuilder();
+
+        public static SpotAccountInformation InvalidSpotAccount = new SpotAccountInformation()
+        {
+            updateTime = 0,
+            accountType = "Invalid",
+            balances = new SpotSymbol[] { },
+            permissions = new string[] { }
+        };
         #endregion
 
-        public long updateTime;
-        public string accountType;
-        public SpotSymbol[] balances;
-        public string[] permissions;
+        public long updateTime { get; set; }
+        public string accountType { get; set; }
+        public SpotSymbol[] balances { get; set; }
+        public string[] permissions { get; set; }
 
         public override string ToString()
         {
             toStringBuilder.Clear();
 
-            toStringBuilder.AppendLine($"updateTime: {this.updateTime}, ");
-            toStringBuilder.AppendLine($"accountType: {this.accountType}, balances: [");
+            toStringBuilder.AppendLine($"updateTime: {this.updateTime}");
+            toStringBuilder.AppendLine($"accountType: {this.accountType}");
+            toStringBuilder.AppendLine($"balances: [");
             if (this.balances != null)
             {
                 foreach (SpotSymbol symbol in this.balances)
@@ -26,13 +35,23 @@ namespace BinanceApp.SpotService
                     toStringBuilder.AppendLine($"{symbol.ToString()}, ");
                 }
             }
-            toStringBuilder.AppendLine("], permissions: [");
+            else
+            {
+                toStringBuilder.AppendLine("null");
+            }
+
+            toStringBuilder.AppendLine("]");
+            toStringBuilder.AppendLine($"permissions: [");
             if (this.permissions != null)
             {
                 foreach (string permission in this.permissions)
                 {
                     toStringBuilder.AppendLine($"{permission}, ");
                 }
+            }
+            else
+            {
+                toStringBuilder.AppendLine("null");
             }
             toStringBuilder.AppendLine("]");
 
