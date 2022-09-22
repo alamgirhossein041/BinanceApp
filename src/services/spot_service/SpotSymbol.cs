@@ -1,5 +1,6 @@
 namespace BinanceApp.SpotService
 {
+    [Serializable]
     public struct SpotSymbol
     {
         public string asset { get; set; }

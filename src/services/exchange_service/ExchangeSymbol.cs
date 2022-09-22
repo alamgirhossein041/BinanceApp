@@ -1,5 +1,6 @@
 namespace BinanceApp.ExchangeService
 {
+    [Serializable]
     public struct ExchangeSymbol
     {
         public string symbol { get; set; }

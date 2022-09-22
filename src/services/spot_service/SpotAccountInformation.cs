@@ -1,4 +1,5 @@
 using System.Text;
+
 namespace BinanceApp.SpotService
 {
     [Serializable]
@@ -7,7 +8,7 @@ namespace BinanceApp.SpotService
         #region Static stuff.
         private static StringBuilder toStringBuilder = new StringBuilder();
 
-        public static SpotAccountInformation InvalidSpotAccount = new SpotAccountInformation()
+        public readonly static SpotAccountInformation InvalidSpotAccount = new SpotAccountInformation()
         {
             updateTime = 0,
             accountType = "Invalid",

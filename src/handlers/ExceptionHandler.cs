@@ -8,8 +8,10 @@ namespace BinanceApp
 
         public static void LogException(Exception e)
         {
+            messageBuilder.Clear();
             messageBuilder.AppendLine($"___MESSAGE:{e.Message}.");
             messageBuilder.AppendLine($"___STACKTRACE:{e.StackTrace}.");
+
             Console.WriteLine(messageBuilder.ToString());
         }
     }

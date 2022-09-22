@@ -3,7 +3,9 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Web;
+using BinanceApp.JsonConverters;
 
 namespace BinanceApp
 {
@@ -62,7 +64,7 @@ namespace BinanceApp
                 // HttpResponseMessageHandler.LogResponse(apiAssetResult);
                 if (apiResult.StatusCode == HttpStatusCode.OK)
                 {
-                    return await this.OnRequestSuccess<T>(apiResult);
+                    return await this.OnRequestSuccess<T?>(apiResult);
                 }
                 else
                 {
@@ -93,7 +95,7 @@ namespace BinanceApp
                 // HttpResponseMessageHandler.LogResponse(apiAssetResult);
                 if (apiResult.StatusCode == HttpStatusCode.OK)
                 {
-                    return await this.OnRequestSuccess<T>(apiResult);
+                    return await this.OnRequestSuccess<T?>(apiResult);
                 }
                 else
                 {
@@ -102,13 +104,38 @@ namespace BinanceApp
             }
         }
 
-        private async Task<T> OnRequestSuccess<T>(HttpResponseMessage response)
+        private async Task<T?> OnRequestSuccess<T>(HttpResponseMessage response)
         {
             string responseContent = await response.Content.ReadAsStringAsync();
             if (!string.IsNullOrWhiteSpace(responseContent))
             {
-                T deserializedResponse = JsonSerializer.Deserialize<T>(responseContent);
-                return deserializedResponse ?? default(T);
+                Console.WriteLine($"{typeof(T).Name}: {responseContent}");
+
+                // Source: https://dotnetfiddle.net/Y4Pzzv
+                JsonSerializerOptions jsonOptions = new JsonSerializerOptions();
+                jsonOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; // Always serialize to camel case, as convention for JSON and javascript
+                jsonOptions.PropertyNameCaseInsensitive = true; // Unless we can have everyone in organization to emit JSON property name with camel case, then we need to set deserializer to be more forgiving re case sensitivity
+                jsonOptions.WriteIndented = true; // SHOULD always set to false (default) for PROD code, keeping payload small. It is set as true here to display serialized JSON to ease readibility.
+                jsonOptions.Converters.Add(new JsonStringEnumConverter()); // Always handle enum as string, ie using enum value as as string
+                jsonOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault; // always ignore null and default value for small serialized JSON payload
+
+                // This is custom converter to handle deserializing from string JSON value to decimal target property.
+                jsonOptions.Converters.Add(new DecimalToStringConverter());
+
+                // This is solution to allow reading string number value to target int/double property value
+                jsonOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString |
+                     JsonNumberHandling.WriteAsString |
+                     JsonNumberHandling.AllowNamedFloatingPointLiterals;
+
+                try
+                {
+                    T deserializedResponse = JsonSerializer.Deserialize<T>(responseContent, jsonOptions);
+                    return deserializedResponse ?? default(T);
+                }
+                catch (Exception e)
+                {
+                    ExceptionHandler.LogException(e);
+                }
             }
 
             return default(T);
