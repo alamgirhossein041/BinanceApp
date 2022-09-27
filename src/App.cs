@@ -2,6 +2,7 @@ using System.Text;
 using BinanceApp.ExchangeService;
 using BinanceApp.PingService;
 using BinanceApp.SpotService;
+using BinanceApp.TimeService;
 
 namespace BinanceApp
 {
@@ -56,11 +57,11 @@ namespace BinanceApp
 
         public void UpdateApp()
         {
-            // if (!this.TryGetServerTime())
-            // {
-            //     Console.WriteLine("Failed to get server time.");
-            //     return;
-            // }
+            if (!this.TryGetServerTime())
+            {
+                Console.WriteLine("Failed to get server time.");
+                return;
+            }
 
             // if (!this.TryGetExchangeAssetInfo("BTCBUSD"))
             // {
@@ -74,7 +75,13 @@ namespace BinanceApp
             //     return;
             // }
 
-            if (!this.TryGetAllOrders("BTCBUSD"))
+            // if (!this.TryGetAllOrders("BTCUSDT"))
+            // {
+            //     Console.WriteLine("Failed to get all orders.");
+            //     return;
+            // }
+
+            if (!this.TryGetAllTrades("BTCUSDT"))
             {
                 Console.WriteLine("Failed to get all orders.");
                 return;
@@ -94,16 +101,33 @@ namespace BinanceApp
 
         private bool TryGetAllOrders(string symbol)
         {
-            Task<SpotSymbolOrder[]?> spotTask = Task.Run<SpotSymbolOrder[]?>(async () => await this.spotService.GetAllOrders(symbol));
+            Task<IEnumerable<SpotSymbolOrder>?> spotTask = Task.Run<IEnumerable<SpotSymbolOrder>?>(async () => await this.spotService.GetAllOrders(symbol));
+            if (spotTask.Result != null)
+            {
+                // StringBuilder stringBuilder = new StringBuilder();
+                // foreach (SpotSymbolOrder order in spotTask.Result)
+                // {
+                //     stringBuilder.AppendLine(order.ToString());
+                // }
+
+                // Console.WriteLine($"Orders: {stringBuilder.ToString()}");
+                return true;
+            }
+            return false;
+        }
+
+        private bool TryGetAllTrades(string symbol)
+        {
+            Task<IEnumerable<SpotSymbolTrade>?> spotTask = Task.Run<IEnumerable<SpotSymbolTrade>?>(async () => await this.spotService.GetAllTrades(symbol));
             if (spotTask.Result != null)
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                foreach (SpotSymbolOrder order in spotTask.Result)
+                foreach (SpotSymbolTrade order in spotTask.Result)
                 {
                     stringBuilder.AppendLine(order.ToString());
                 }
 
-                Console.WriteLine($"Orders: {stringBuilder.ToString()}");
+                Console.WriteLine($"Trades: {stringBuilder.ToString()}");
                 return true;
             }
             return false;
@@ -111,7 +135,7 @@ namespace BinanceApp
 
         private bool TryGetExchangeAssetInfo(string pairName)
         {
-            Task<BinanceExchangeResult?> exchangeAssetTask = Task.Run<BinanceExchangeResult?>(async () => await this.exchangeService.GetExchangeSymbol(pairName));
+            Task<ExchangeInfo?> exchangeAssetTask = Task.Run<ExchangeInfo?>(async () => await this.exchangeService.GetExchangeSymbol(pairName));
             if (exchangeAssetTask.Result != null)
             {
                 // Console.WriteLine($"Exchange result: {exchangeAssetTask.Result.ToString()}");
@@ -129,7 +153,7 @@ namespace BinanceApp
             Task<DateTime?> serverTimeTask = Task.Run<DateTime?>(async () => await this.timeService.GetServerTime());
             if (serverTimeTask.Result != null)
             {
-                // Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
+                Console.WriteLine("Server time: " + serverTimeTask.Result.ToString());
                 return true;
             }
             return false;

@@ -17,7 +17,7 @@ namespace BinanceApp.ExchangeService
 
         }
 
-        public async Task<BinanceExchangeResult?> GetExchangeSymbol(string symbol)
+        public async Task<ExchangeInfo?> GetExchangeSymbol(string symbol)
         {
             try
             {
@@ -27,8 +27,8 @@ namespace BinanceApp.ExchangeService
                 if (apiAssetResult.StatusCode == HttpStatusCode.OK)
                 {
                     string apiAssetResultContent = await apiAssetResult.Content.ReadAsStringAsync();
-                    BinanceExchangeResult? asset = JsonSerializer.Deserialize<BinanceExchangeResult>(apiAssetResultContent);
-                    return asset ?? BinanceExchangeResult.InvalidResult;
+                    ExchangeInfo? asset = JsonSerializer.Deserialize<ExchangeInfo>(apiAssetResultContent);
+                    return asset ?? ExchangeInfo.InvalidResult;
                 }
 
                 return null;

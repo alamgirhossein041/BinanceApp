@@ -75,6 +75,11 @@ namespace BinanceApp
 
         protected async Task<T?> SendSignedRequest<T>(HttpMethod method, string endpoint, Dictionary<string, object> parameters)
         {
+            if (parameters == null)
+            {
+                parameters = new Dictionary<string, object>();
+            }
+
             parameters.Add("timestamp", new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds().ToString());
 
             string queryString = this.GenerateQueryString(parameters);
@@ -86,7 +91,7 @@ namespace BinanceApp
             string endPoint = $"{App.BaseUrl}{endpoint}";
             string finalUrl = $"{endPoint}?{queryString}";
 
-            Console.WriteLine($"Sending request to {finalUrl}");
+            // Console.WriteLine($"Sending request to {finalUrl}");
 
             using (HttpRequestMessage request = new HttpRequestMessage() { Method = method, RequestUri = new Uri(finalUrl) })
             {
@@ -109,7 +114,7 @@ namespace BinanceApp
             string responseContent = await response.Content.ReadAsStringAsync();
             if (!string.IsNullOrWhiteSpace(responseContent))
             {
-                Console.WriteLine($"{typeof(T).Name}: {responseContent}");
+                // Console.WriteLine($"{typeof(T).Name}: {responseContent}");
 
                 // Source: https://dotnetfiddle.net/Y4Pzzv
                 JsonSerializerOptions jsonOptions = new JsonSerializerOptions();

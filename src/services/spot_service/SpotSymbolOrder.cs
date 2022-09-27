@@ -9,7 +9,7 @@ namespace BinanceApp.SpotService
 
         public string symbol { get; set; }
         public long orderId { get; set; }
-        public long orderListId { get; set; }
+        public int orderListId { get; set; }
         public string clientOrderId { get; set; }
         public decimal price { get; set; }
         public decimal origQty { get; set; }

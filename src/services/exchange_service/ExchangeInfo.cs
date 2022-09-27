@@ -2,12 +2,12 @@ using System.Text;
 namespace BinanceApp.ExchangeService
 {
     [Serializable]
-    public struct BinanceExchangeResult
+    public struct ExchangeInfo
     {
         #region Static stuff.
         private static StringBuilder toStringBuilder = new StringBuilder();
 
-        public static BinanceExchangeResult InvalidResult = new BinanceExchangeResult()
+        public static ExchangeInfo InvalidResult = new ExchangeInfo()
         {
             timezone = "Invalid",
             serverTime = 0,
