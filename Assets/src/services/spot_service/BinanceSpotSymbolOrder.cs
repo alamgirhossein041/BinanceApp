@@ -3,7 +3,7 @@ using System.Text;
 namespace BinanceApp.SpotService
 {
     [Serializable]
-    public struct SpotSymbolOrder
+    public struct BinanceSpotSymbolOrder
     {
         private static StringBuilder toStringBuilder = new StringBuilder();
 

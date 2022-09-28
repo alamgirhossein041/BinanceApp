@@ -1,4 +1,4 @@
-namespace BinanceApp
+namespace Services
 {
     public abstract class ServiceBase : IAppService
     {

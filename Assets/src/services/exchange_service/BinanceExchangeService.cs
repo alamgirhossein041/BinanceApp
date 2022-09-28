@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace BinanceApp.ExchangeService
 {
-    public class BinanceExchangeService : ServiceBase
+    public class BinanceExchangeService : BinanceBaseService
     {
         private readonly string assetPath = string.Empty;
 
@@ -12,12 +12,12 @@ namespace BinanceApp.ExchangeService
             this.assetPath = assetPath;
         }
 
-        override public void StartService()
+        public override void StartService()
         {
 
         }
 
-        public async Task<ExchangeInfo?> GetExchangeSymbol(string symbol)
+        public async Task<BinanceExchangeInfo?> GetExchangeSymbol(string symbol)
         {
             try
             {
@@ -27,8 +27,8 @@ namespace BinanceApp.ExchangeService
                 if (apiAssetResult.StatusCode == HttpStatusCode.OK)
                 {
                     string apiAssetResultContent = await apiAssetResult.Content.ReadAsStringAsync();
-                    ExchangeInfo? asset = JsonSerializer.Deserialize<ExchangeInfo>(apiAssetResultContent);
-                    return asset ?? ExchangeInfo.InvalidResult;
+                    BinanceExchangeInfo? asset = JsonSerializer.Deserialize<BinanceExchangeInfo>(apiAssetResultContent);
+                    return asset ?? BinanceExchangeInfo.InvalidResult;
                 }
 
                 return null;

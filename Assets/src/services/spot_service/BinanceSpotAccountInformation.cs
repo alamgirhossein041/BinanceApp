@@ -3,23 +3,23 @@ using System.Text;
 namespace BinanceApp.SpotService
 {
     [Serializable]
-    public struct SpotAccountInformation
+    public struct BinanceSpotAccountInformation
     {
         #region Static stuff.
         private static StringBuilder toStringBuilder = new StringBuilder();
 
-        public readonly static SpotAccountInformation InvalidSpotAccount = new SpotAccountInformation()
+        public readonly static BinanceSpotAccountInformation InvalidSpotAccount = new BinanceSpotAccountInformation()
         {
             updateTime = 0,
             accountType = "Invalid",
-            balances = new SpotSymbol[] { },
+            balances = new BinanceSpotSymbol[] { },
             permissions = new string[] { }
         };
         #endregion
 
         public long updateTime { get; set; }
         public string accountType { get; set; }
-        public SpotSymbol[] balances { get; set; }
+        public BinanceSpotSymbol[] balances { get; set; }
         public string[] permissions { get; set; }
 
         public override string ToString()
@@ -31,7 +31,7 @@ namespace BinanceApp.SpotService
             toStringBuilder.AppendLine($"balances: [");
             if (this.balances != null)
             {
-                foreach (SpotSymbol symbol in this.balances)
+                foreach (BinanceSpotSymbol symbol in this.balances)
                 {
                     toStringBuilder.AppendLine($"{symbol.ToString()}, ");
                 }

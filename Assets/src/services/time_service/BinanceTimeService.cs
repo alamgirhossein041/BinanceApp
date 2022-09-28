@@ -18,7 +18,7 @@ namespace BinanceApp.TimeService
 
         public async Task<DateTime?> GetServerTime()
         {
-            ServerTime? serverTime = await this.SendRequest<ServerTime?>(HttpMethod.Get, this.apiTimePath, new Dictionary<string, object>());
+            BinanceServerTime? serverTime = await this.SendRequest<BinanceServerTime?>(HttpMethod.Get, this.apiTimePath, new Dictionary<string, object>());
 
             if (long.TryParse(serverTime.ToString(), out long asDouble))
             {

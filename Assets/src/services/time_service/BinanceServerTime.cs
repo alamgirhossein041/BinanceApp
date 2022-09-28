@@ -1,6 +1,6 @@
 namespace BinanceApp.TimeService
 {
-    public struct ServerTime
+    public struct BinanceServerTime
     {
         public long serverTime { get; set; }
 

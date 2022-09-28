@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Web;
 using BinanceApp.JsonConverters;
+using Services;
 
 namespace BinanceApp
 {

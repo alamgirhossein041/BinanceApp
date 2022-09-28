@@ -90,7 +90,7 @@ namespace BinanceApp
 
         private bool TryGetSpotAccount()
         {
-            Task<SpotAccountInformation?> spotTask = Task.Run<SpotAccountInformation?>(async () => await this.spotService.GetSpotAccountInformation());
+            Task<BinanceSpotAccountInformation?> spotTask = Task.Run<BinanceSpotAccountInformation?>(async () => await this.spotService.GetSpotAccountInformation());
             if (spotTask.Result != null)
             {
                 // Console.WriteLine($"Spot account: {spotTask.Result.ToString()}");
@@ -101,7 +101,7 @@ namespace BinanceApp
 
         private bool TryGetAllOrders(string symbol)
         {
-            Task<IEnumerable<SpotSymbolOrder>?> spotTask = Task.Run<IEnumerable<SpotSymbolOrder>?>(async () => await this.spotService.GetAllOrders(symbol));
+            Task<IEnumerable<BinanceSpotSymbolOrder>?> spotTask = Task.Run<IEnumerable<BinanceSpotSymbolOrder>?>(async () => await this.spotService.GetAllOrders(symbol));
             if (spotTask.Result != null)
             {
                 // StringBuilder stringBuilder = new StringBuilder();
@@ -118,11 +118,11 @@ namespace BinanceApp
 
         private bool TryGetAllTrades(string symbol)
         {
-            Task<IEnumerable<SpotSymbolTrade>?> spotTask = Task.Run<IEnumerable<SpotSymbolTrade>?>(async () => await this.spotService.GetAllTrades(symbol));
+            Task<IEnumerable<BinanceSpotSymbolTrade>?> spotTask = Task.Run<IEnumerable<BinanceSpotSymbolTrade>?>(async () => await this.spotService.GetAllTrades(symbol));
             if (spotTask.Result != null)
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                foreach (SpotSymbolTrade order in spotTask.Result)
+                foreach (BinanceSpotSymbolTrade order in spotTask.Result)
                 {
                     stringBuilder.AppendLine(order.ToString());
                 }
@@ -135,7 +135,7 @@ namespace BinanceApp
 
         private bool TryGetExchangeAssetInfo(string pairName)
         {
-            Task<ExchangeInfo?> exchangeAssetTask = Task.Run<ExchangeInfo?>(async () => await this.exchangeService.GetExchangeSymbol(pairName));
+            Task<BinanceExchangeInfo?> exchangeAssetTask = Task.Run<BinanceExchangeInfo?>(async () => await this.exchangeService.GetExchangeSymbol(pairName));
             if (exchangeAssetTask.Result != null)
             {
                 // Console.WriteLine($"Exchange result: {exchangeAssetTask.Result.ToString()}");

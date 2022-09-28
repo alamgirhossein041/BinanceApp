@@ -11,35 +11,35 @@ namespace BinanceApp.SpotService
             this.apiSpotAccountInfoPath = apiSpotPath;
         }
 
-        override public void StartService()
+        public override void StartService()
         {
 
         }
 
-        public async Task<SpotAccountInformation?> GetSpotAccountInformation()
+        public async Task<BinanceSpotAccountInformation?> GetSpotAccountInformation()
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("recvWindow", 5000);
 
-            return await this.SendSignedRequest<SpotAccountInformation?>(HttpMethod.Get, this.apiSpotAccountInfoPath, parameters);
+            return await this.SendSignedRequest<BinanceSpotAccountInformation?>(HttpMethod.Get, this.apiSpotAccountInfoPath, parameters);
         }
 
-        public async Task<IEnumerable<SpotSymbolOrder>?> GetAllOrders(string symbol)
-        {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("symbol", symbol.ToUpper());
-            parameters.Add("recvWindow", 5000);
-
-            return await this.SendSignedRequest<IEnumerable<SpotSymbolOrder>?>(HttpMethod.Get, this.apiSpotAllOrdersPath, parameters);
-        }
-
-        public async Task<IEnumerable<SpotSymbolTrade>?> GetAllTrades(string symbol)
+        public async Task<IEnumerable<BinanceSpotSymbolOrder>?> GetAllOrders(string symbol)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("symbol", symbol.ToUpper());
             parameters.Add("recvWindow", 5000);
 
-            return await this.SendSignedRequest<IEnumerable<SpotSymbolTrade>?>(HttpMethod.Get, this.apiSpotAllTradesPath, parameters);
+            return await this.SendSignedRequest<IEnumerable<BinanceSpotSymbolOrder>?>(HttpMethod.Get, this.apiSpotAllOrdersPath, parameters);
+        }
+
+        public async Task<IEnumerable<BinanceSpotSymbolTrade>?> GetAllTrades(string symbol)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("symbol", symbol.ToUpper());
+            parameters.Add("recvWindow", 5000);
+
+            return await this.SendSignedRequest<IEnumerable<BinanceSpotSymbolTrade>?>(HttpMethod.Get, this.apiSpotAllTradesPath, parameters);
         }
     }
 }
