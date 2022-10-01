@@ -2,13 +2,11 @@ namespace BinanceApp.TimeService
 {
     public class BinanceTimeService : BinanceBaseService
     {
-        private const string API_TIME_METHOD = "GET";
+        private string apiTimePath = "/api/v3/time";
 
-        private string apiTimePath = string.Empty;
-
-        public BinanceTimeService(IApp app, string apiTimePath) : base(app)
+        public BinanceTimeService(IApp app) : base(app)
         {
-            this.apiTimePath = apiTimePath;
+
         }
 
         override public void StartService()

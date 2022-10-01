@@ -3,6 +3,7 @@ using BinanceApp.ExchangeService;
 using BinanceApp.PingService;
 using BinanceApp.SpotService;
 using BinanceApp.TimeService;
+using Services.XLSService;
 
 namespace BinanceApp
 {
@@ -22,6 +23,8 @@ namespace BinanceApp
         private BinanceSpotService spotService = null;
         private BinanceTimeService timeService = null;
 
+        private XLSService xlsService = null;
+
         public bool IsRunning => this.isRunning;
         public string BaseUrl => BASE_URL;
         public string ApiKey => API_KEY;
@@ -33,10 +36,11 @@ namespace BinanceApp
         {
             this.httpClient = new HttpClient();
 
-            this.exchangeService = new BinanceExchangeService(this, "/api/v3/exchangeInfo?symbol={0}");
-            this.pingService = new BinancePingService(this, "/api/v3/ping");
-            this.spotService = new BinanceSpotService(this, "/api/v3/account");
-            this.timeService = new BinanceTimeService(this, "/api/v3/time");
+            this.exchangeService = new BinanceExchangeService(this);
+            this.pingService = new BinancePingService(this);
+            this.spotService = new BinanceSpotService(this);
+            this.timeService = new BinanceTimeService(this);
+            this.xlsService = new XLSService(this);
         }
 
         public void StartApp()

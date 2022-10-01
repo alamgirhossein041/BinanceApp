@@ -5,11 +5,11 @@ namespace BinanceApp.PingService
 {
     public class BinancePingService : BinanceBaseService
     {
-        private readonly string apiPingPath = string.Empty;
+        private readonly string apiPingPath = "/api/v3/ping";
 
-        public BinancePingService(IApp app, string apiPingPath) : base(app)
+        public BinancePingService(IApp app) : base(app)
         {
-            this.apiPingPath = apiPingPath;
+
         }
 
         override public void StartService()
@@ -19,18 +19,7 @@ namespace BinanceApp.PingService
 
         public async Task<BinancePing?> ApiPingRequest()
         {
-            string endPoint = $"{App.BaseUrl}{this.apiPingPath}";
-
-            try
-            {
-                return await this.SendRequest<BinancePing?>(HttpMethod.Get, this.apiPingPath, null);
-            }
-            catch (Exception e)
-            {
-                ExceptionHandler.LogException(e);
-            }
-
-            return BinancePing.InvalidPing;
+            return await this.SendRequest<BinancePing?>(HttpMethod.Get, this.apiPingPath, null);
         }
 
         public async Task<bool> PingBaseUrl()

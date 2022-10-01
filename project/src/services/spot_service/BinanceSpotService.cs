@@ -6,9 +6,9 @@ namespace BinanceApp.SpotService
         private readonly string apiSpotAllOrdersPath = "/api/v3/allOrders";
         private readonly string apiSpotAllTradesPath = "/api/v3/myTrades";
 
-        public BinanceSpotService(IApp app, string apiSpotPath) : base(app)
+        public BinanceSpotService(IApp app) : base(app)
         {
-            this.apiSpotAccountInfoPath = apiSpotPath;
+
         }
 
         public override void StartService()
