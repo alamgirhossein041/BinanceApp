@@ -1,37 +1,35 @@
-using Excel = Microsoft.Office.Interop.Excel;
+using OfficeOpenXml;
+using System.Runtime.CompilerServices;
 
 namespace Services.XLSService
 {
     public class XLSService : ServiceBase
     {
-        private Excel.Application excelApp = null;
-        private Excel.Workbook currentWorkBook = null;
-        private Excel.Worksheet currentWorkSheet = null;
-
         public XLSService(IApp app) : base(app)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
 
         public override void StartService()
         {
-            this.CreateXLSFile();
-        }
-
-        private void CreateXLSFile()
-        {
-            this.excelApp = new Excel.Application();
-            this.currentWorkBook = excelApp.Workbooks.Add();
-            this.currentWorkSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+            this.SaveXLSFile("binance_app");
         }
 
         private void AddContentToCell(int row, string column, string content)
         {
-            this.currentWorkSheet.Cells[row, column] = content;
+
         }
 
-        public void SaveXLSFile(string fileName)
+        private void SaveXLSFile(string fileName)
         {
-            this.currentWorkBook.SaveAs($"{Directory.GetCurrentDirectory()}\\{fileName}", Excel.XlFileFormat.xlOpenXMLWorkbook);
+            FileInfo fileInfo = new FileInfo(String.Format(@"C:\BinanceApp\{0}.xls", fileName));
+            if (fileInfo.Exists) {
+                fileInfo.Delete();
+            }
+
+            using (ExcelPackage package = new ExcelPackage(fileInfo)) {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("binance_app");
+            }
         }
     }
 }
