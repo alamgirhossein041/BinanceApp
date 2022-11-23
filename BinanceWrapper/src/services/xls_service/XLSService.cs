@@ -29,6 +29,8 @@ namespace Services.XLSService
 
             using (ExcelPackage package = new ExcelPackage(fileInfo)) {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("binance_app");
+
+                package.Save();
             }
         }
     }
