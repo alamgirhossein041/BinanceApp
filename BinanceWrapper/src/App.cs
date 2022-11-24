@@ -85,9 +85,19 @@ namespace BinanceApp
             //     return;
             // }
 
-            if (!this.TryGetAllTrades("BTCUSDT"))
-            {
-                Console.WriteLine("Failed to get all orders.");
+            //if (!this.TryGetAllTrades("BTCUSDT"))
+            //{
+            //    Console.WriteLine("Failed to get all orders.");
+            //    return;
+            //}
+
+            if (!this.TryGetAmountPurchased("BTC", "USDT")) {
+                Console.WriteLine("Failed to get amount purchased.");
+                return;
+            }
+
+            if (!this.TryGetAmountPurchased("BTC", "BUSD")) {
+                Console.WriteLine("Failed to get amount purchased.");
                 return;
             }
         }
@@ -103,9 +113,9 @@ namespace BinanceApp
             return false;
         }
 
-        private bool TryGetAllOrders(string symbol)
+        private bool TryGetAllOrders(string symbolPurchased, string symbolPayed)
         {
-            Task<IEnumerable<BinanceSpotSymbolOrder>?> spotTask = Task.Run<IEnumerable<BinanceSpotSymbolOrder>?>(async () => await this.spotService.GetAllOrders(symbol));
+            Task<IEnumerable<BinanceSpotSymbolOrder>?> spotTask = Task.Run<IEnumerable<BinanceSpotSymbolOrder>?>(async () => await this.spotService.GetAllOrders($"{symbolPurchased.ToUpper()}{symbolPayed.ToUpper()}"));
             if (spotTask.Result != null)
             {
                 // StringBuilder stringBuilder = new StringBuilder();
@@ -120,9 +130,9 @@ namespace BinanceApp
             return false;
         }
 
-        private bool TryGetAllTrades(string symbol)
+        private bool TryGetAllTrades(string symbolPurchased, string symbolPayed)
         {
-            Task<IEnumerable<BinanceSpotSymbolTrade>?> spotTask = Task.Run<IEnumerable<BinanceSpotSymbolTrade>?>(async () => await this.spotService.GetAllTrades(symbol));
+            Task<IEnumerable<BinanceSpotSymbolTrade>?> spotTask = Task.Run<IEnumerable<BinanceSpotSymbolTrade>?>(async () => await this.spotService.GetAllTrades($"{symbolPurchased.ToUpper()}{symbolPayed.ToUpper()}"));
             if (spotTask.Result != null)
             {
                 StringBuilder stringBuilder = new StringBuilder();
@@ -137,9 +147,31 @@ namespace BinanceApp
             return false;
         }
 
-        private bool TryGetExchangeAssetInfo(string pairName)
+        private bool TryGetAmountPurchased(string symbolPurchased, string symbolPayed)
         {
-            Task<BinanceExchangeInfo?> exchangeAssetTask = Task.Run<BinanceExchangeInfo?>(async () => await this.exchangeService.GetExchangeSymbol(pairName));
+            Task<IEnumerable<BinanceSpotSymbolTrade>?> spotTask = Task.Run<IEnumerable<BinanceSpotSymbolTrade>?>(async () => await this.spotService.GetAllTrades($"{symbolPurchased.ToUpper()}{symbolPayed.ToUpper()}"));
+            if (spotTask.Result != null) {
+                decimal total = 0;
+                decimal expended = 0;
+                foreach (BinanceSpotSymbolTrade order in spotTask.Result) {
+                    if (!order.isBuyer) {
+                        continue;
+                    }
+
+                    total += order.qty;
+                    expended += order.quoteQty;
+                }
+
+                Console.WriteLine($"Total of {symbolPurchased}: {total}, purchased with {expended} {symbolPayed}");
+
+                return true;
+            }
+            return false;
+        }
+
+        private bool TryGetExchangeAssetInfo(string symbolMain, string symbolSecondary)
+        {
+            Task<BinanceExchangeInfo?> exchangeAssetTask = Task.Run<BinanceExchangeInfo?>(async () => await this.exchangeService.GetExchangeSymbol($"{symbolMain.ToUpper()}{symbolSecondary.ToUpper()}"));
             if (exchangeAssetTask.Result != null)
             {
                 // Console.WriteLine($"Exchange result: {exchangeAssetTask.Result.ToString()}");
