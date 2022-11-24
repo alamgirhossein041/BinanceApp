@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace BinanceApp.PingService
+namespace BinanceWrapper.PingService
 {
     public class BinancePingService : BinanceBaseService
     {

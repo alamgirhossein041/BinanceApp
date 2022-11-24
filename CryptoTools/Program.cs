@@ -4,7 +4,7 @@
     {
         Console.WriteLine("Hello Binance World!");
 
-        BinanceApp.App binanceApp = new BinanceApp.App();
+        BinanceWrapper.BinanceApp binanceApp = new BinanceWrapper.BinanceApp();
         binanceApp.StartApp();
         binanceApp.UpdateApp();
     }

@@ -1,4 +1,4 @@
-namespace BinanceApp.PingService
+namespace BinanceWrapper.PingService
 {
     [Serializable]
     public struct BinancePing

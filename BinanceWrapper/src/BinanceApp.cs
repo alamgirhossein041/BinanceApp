@@ -1,13 +1,12 @@
 using System.Text;
-using BinanceApp.ExchangeService;
-using BinanceApp.PingService;
-using BinanceApp.SpotService;
-using BinanceApp.TimeService;
-using Services.XLSService;
+using BinanceWrapper.ExchangeService;
+using BinanceWrapper.PingService;
+using BinanceWrapper.SpotService;
+using BinanceWrapper.TimeService;
 
-namespace BinanceApp
+namespace BinanceWrapper
 {
-    public class App : IApp
+    public class BinanceApp : IApp
     {
         private const string BASE_URL = "https://api.binance.com";
 
@@ -23,8 +22,6 @@ namespace BinanceApp
         private BinanceSpotService spotService = null;
         private BinanceTimeService timeService = null;
 
-        private XLSService xlsService = null;
-
         public bool IsRunning => this.isRunning;
         public string BaseUrl => BASE_URL;
         public string ApiKey => API_KEY;
@@ -32,7 +29,7 @@ namespace BinanceApp
 
         public HttpClient HttpClient => this.httpClient;
 
-        public App()
+        public BinanceApp()
         {
             this.httpClient = new HttpClient();
 
@@ -40,7 +37,6 @@ namespace BinanceApp
             this.pingService = new BinancePingService(this);
             this.spotService = new BinanceSpotService(this);
             this.timeService = new BinanceTimeService(this);
-            this.xlsService = new XLSService(this);
         }
 
         public void StartApp()

@@ -1,4 +1,4 @@
-namespace BinanceApp.SpotService
+namespace BinanceWrapper.SpotService
 {
     [Serializable]
     public struct BinanceSpotSymbol

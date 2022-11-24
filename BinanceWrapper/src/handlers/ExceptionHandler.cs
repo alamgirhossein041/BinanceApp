@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace BinanceApp
+namespace BinanceWrapper
 {
     public static class ExceptionHandler
     {

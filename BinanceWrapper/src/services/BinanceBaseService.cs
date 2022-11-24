@@ -5,10 +5,10 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Web;
-using BinanceApp.JsonConverters;
+using BinanceWrapper.JsonConverters;
 using Services;
 
-namespace BinanceApp
+namespace BinanceWrapper
 {
     public abstract class BinanceBaseService : ServiceBase
     {

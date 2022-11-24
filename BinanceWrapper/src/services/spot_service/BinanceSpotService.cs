@@ -1,4 +1,4 @@
-namespace BinanceApp.SpotService
+namespace BinanceWrapper.SpotService
 {
     public class BinanceSpotService : BinanceBaseService
     {

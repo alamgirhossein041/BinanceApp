@@ -1,4 +1,4 @@
-namespace BinanceApp.ExchangeService
+namespace BinanceWrapper.ExchangeService
 {
     [Serializable]
     public struct ExchangeSymbol

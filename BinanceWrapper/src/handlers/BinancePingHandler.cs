@@ -1,7 +1,7 @@
 using System.Net.NetworkInformation;
 using System.Text;
 
-namespace BinanceApp
+namespace BinanceWrapper
 {
     public static class PingReplyHandler
     {

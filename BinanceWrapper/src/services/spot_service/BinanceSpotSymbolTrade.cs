@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace BinanceApp.SpotService
+namespace BinanceWrapper.SpotService
 {
     public struct BinanceSpotSymbolTrade
     {

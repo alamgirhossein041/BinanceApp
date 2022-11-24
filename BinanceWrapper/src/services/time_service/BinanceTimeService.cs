@@ -1,4 +1,4 @@
-namespace BinanceApp.TimeService
+namespace BinanceWrapper.TimeService
 {
     public class BinanceTimeService : BinanceBaseService
     {

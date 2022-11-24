@@ -3,7 +3,7 @@ using System.Buffers.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace BinanceApp.JsonConverters
+namespace BinanceWrapper.JsonConverters
 {
     // Source: https://stackoverflow.com/questions/57626878/the-json-value-could-not-be-converted-to-system-int32
     public class DecimalToStringConverter : JsonConverter<decimal>
